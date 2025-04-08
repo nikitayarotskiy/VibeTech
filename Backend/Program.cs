@@ -9,6 +9,7 @@ namespace Backend
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            Console.WriteLine("marcus test print! :)");
             Console.WriteLine("i like bhombing countries");
         }
     }
