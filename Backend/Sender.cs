@@ -13,7 +13,9 @@ namespace Backend
         public static void Init()
         {
             listener = new HttpListener();
-            listener.Prefixes.Add("http://10.182.160.243:4000/api/lifeleap/sendData/");
+            listener.Prefixes.Add("http://10.182.160.243:4000/api/lifeleap/getCountryData/");
+            listener.Prefixes.Add("http://10.182.160.243:4000/api/lifeleap/setCountryData/");
+            listener.Prefixes.Add("http://10.182.160.243:4000/api/lifeleap/updateCountryData/");
             try
             {
                 listener.Start();
@@ -40,14 +42,44 @@ namespace Backend
             response.AddHeader("Access-Control-Allow-Credentials", "true");
             response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
             
-            // Get a response stream and write the response to it.
-            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(
-                new System.IO.StreamReader(request.InputStream, request.ContentEncoding).ReadToEnd());
-            response.StatusCode = 200;
-            response.ContentLength64 = buffer.Length;
-            string myString = System.Text.ASCIIEncoding.Default.GetString(buffer);
-            Console.WriteLine(myString);
-            response.OutputStream.Write(System.Text.Encoding.UTF8.GetBytes("{\"population\":40000000,\"gdp\":2100000000000,\"lgc\":1.09375,\"oldlgc\":1.09375,\"oldoldlgc\":1.09375,\"livingCost\":48000,\"inflation\":1.02,\"deltaHealth\":1,\"healthcareEfficacy\":0.95,\"diseaseSeverity\":0.2,\"diseaseAmount\":0.05,\"immigrationRate\":39166,\"baseImmigrationRate\":37500,\"baseFertility\":0,\"baseMortality\":0,\"fertility\":0,\"mortality\":0}\n"));
+            //check for each api thing
+            if (request.RawUrl == "/api/lifeleap/getCountryData")
+            {
+                // Get a response stream and write the response to it.
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(
+                    new System.IO.StreamReader(request.InputStream, request.ContentEncoding).ReadToEnd());
+                response.StatusCode = 200;
+                response.ContentLength64 = buffer.Length;
+                string myString = System.Text.ASCIIEncoding.Default.GetString(buffer);
+            
+                Console.WriteLine(myString);
+                response.OutputStream.Write(System.Text.Encoding.UTF8.GetBytes(myString));
+            }
+            else if (request.RawUrl == "/api/lifeleap/setCountryData")
+            {
+                // Get a response stream and write the response to it.
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(
+                    new System.IO.StreamReader(request.InputStream, request.ContentEncoding).ReadToEnd());
+                response.StatusCode = 200;
+                response.ContentLength64 = buffer.Length;
+                string myString = System.Text.ASCIIEncoding.Default.GetString(buffer);
+            
+                Console.WriteLine(myString);
+                response.OutputStream.Write(System.Text.Encoding.UTF8.GetBytes(myString));
+            }
+            else if (request.RawUrl == "/api/lifeleap/updateCountryData")
+            {
+                // Get a response stream and write the response to it.
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(
+                    new System.IO.StreamReader(request.InputStream, request.ContentEncoding).ReadToEnd());
+                response.StatusCode = 200;
+                response.ContentLength64 = buffer.Length;
+                string myString = System.Text.ASCIIEncoding.Default.GetString(buffer);
+            
+                Console.WriteLine(myString);
+                response.OutputStream.Write(System.Text.Encoding.UTF8.GetBytes(myString));
+            }
+            
             response.Close();
         }
     }

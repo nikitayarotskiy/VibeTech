@@ -3,7 +3,7 @@ using System.Text.Json;
 namespace Backend
 {
 
-	public struct CEV
+	public class CEV
 	{
 		public long population {get; set;}
 		public long gdp { get; set; }//dollar value
@@ -19,36 +19,21 @@ namespace Backend
     public class Country
     {
 	    
-      //note: we are dealing with big numbers, we are using 64 bit data types
+	    public CEV cev { get; set; }
+	    
+		public double lgc {get; set;}//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+		public double oldlgc {get; set;}//store old values to allow calculation of perception of state of the economy
+		public double oldoldlgc { get; set; }
+		public double inflation {get; set;}//increase in cost of living, something like 1.02
 
-	//simulation variabes
+		//internal variabes for healthcare
+		public double deltaHealth {get; set;}//from 0-1
 
-	//internal variables that are global
-	public long population {get; set;}
-
-	//internal variables for economy
-	public long gdp { get; set; }//dollar value
-	public double lgc {get; set;}//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
-	public double oldlgc {get; set;}//store old values to allow calculation of perception of state of the economy
-	public double oldoldlgc {get; set;}
-	public double livingCost {get; set;}//cost of living, dollar value
-	public double inflation {get; set;}//increase in cost of living, something like 1.02
-
-	//internal variabes for healthcare
-	public double deltaHealth {get; set;}//from 0-1
-	public double healthcareEfficacy {get; set;}//from 0-1 how many diseases result in death
-	public double diseaseSeverity {get; set;}//affects health care efficacy
-	public double diseaseAmount {get; set;}
-
-	//internal variables for immigration/migration
-	public long immigrationRate {get; set;}//amount of people immigrating and emmigrating summed
-	public long baseImmigrationRate {get; set;}//base immigration and migration rates, try to return to these
-
-	//internal variables for fertility
-	public long baseFertility {get; set;}//births per woman
-	public long baseMortality {get; set;}//deaths of the population as scalar
-	public long fertility {get; set;}//births per woman
-	public long mortality {get; set;}//deaths of the population as a scalar
+		//internal variables for immigration/migration
+		public long immigrationRate {get; set;}//amount of people immigrating and emmigrating summed
+		
+		public long fertility {get; set;}//births per woman
+		public long mortality {get; set;}//deaths of the population as a scalar
 
 
 	//disaster types
@@ -76,7 +61,7 @@ namespace Backend
                 AllowTrailingCommas = true,
             };
 
-            string json = JsonSerializer.Serialize(this, options);
+            string json = JsonSerializer.Serialize(this.cev, options);
             return json;
         }
 
@@ -90,22 +75,22 @@ namespace Backend
 	        //country health(affectsfertility/birth rate and healthcare and disease and etc)
 	        
 	        //set default values for variables
-	        population = 40000000;
+	        cev.population = 40000000;
 
-	        gdp = 2100000000000;//dollar value
-	        livingCost = 48000;//cost of living, dollar value
+	        cev.gdp = 2100000000000;//dollar value
+	        cev.livingCost = 48000;//cost of living, dollar value
 	        inflation = 1.02;//increase in cost of living, something like 1.02
-	        lgc = (double)gdp / (double)population / (double)livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+	        lgc = (double)cev.gdp / (double)cev.population / (double)cev.livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
 	        oldlgc = lgc;//store old values to allow calculation of perception of state of the economy
 	        oldoldlgc = lgc;
 
 	        deltaHealth = 1.0;//from 0-1
-	        healthcareEfficacy = 0.95;//from 0-1 how many diseases result in death
-	        diseaseSeverity = 0.2;//affects health care efficacy
-	        diseaseAmount = 0.05;
+	        cev.healthcareEfficacy = 0.95;//from 0-1 how many diseases result in death
+	        cev.diseaseSeverity = 0.2;//affects health care efficacy
+	        cev.diseaseAmount = 0.05;
 
 	        immigrationRate = 39166;//amount of people immigrating and emmigrating summed
-	        baseImmigrationRate = 37500;
+	        cev.baseImmigrationRate = 37500;
 
 	        /*baseFertility = 1.33;
 	        baseMortality = 0.08;

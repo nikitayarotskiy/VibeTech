@@ -3,6 +3,7 @@ namespace Backend
     public static class World
     {
         public static List<Country> countries;
+        public static Country[] defaults;
         public static int countryCount = 3;
 
         public static void Init()
@@ -16,6 +17,10 @@ namespace Backend
                 //load from index of json
                 countries[i].LoadFromJson("");
             }
+            
+            defaults = new Country[countries.Count];
+
+            defaults[0] = new Country();
         }
 
         public static void Update(float dt)
