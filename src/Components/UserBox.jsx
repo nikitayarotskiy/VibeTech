@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Slider, Switch } from '@mui/material';
-import { sendData } from '../api/sendData';
+import { updateCountrData } from '../api/updateCountrData';
 
 export default function UserBox() {
     const [formData, setFormData] = useState({
@@ -17,10 +17,11 @@ export default function UserBox() {
         isDeveloped: true
     });
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await sendData(formData);
+            const response = await updateCountrData(formData);
             if (response) {
                 console.log('Data sent successfully:', response);
             } else {

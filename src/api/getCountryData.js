@@ -2,7 +2,7 @@ import { API_ENDPOINTS } from './apiConfig';
 
 export async function getCountryData(country) {
     try {
-        const response = await fetch(API_ENDPOINTS.GET_DATA, {
+        const response = await fetch(API_ENDPOINTS.GET_COUNTRY_DATA, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

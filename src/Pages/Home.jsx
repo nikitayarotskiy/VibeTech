@@ -6,40 +6,40 @@ import OutputBox from '../Components/OutputBox';
 import VissualBox from '../Components/VissualBox';
 import Collapse from '../Components/Collapse';
 import Tittle from '../Components/Tittle';
+import BackToStart from '../Components/BackToStart';
 
 
 export default function Home() {
     const navigate = useNavigate();
-    const [populationList, setPopulationList] = useState([]);
-    const [statistics, setStatistics] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
-            setPopulationList(generateList(100));
+            const countryId = localStorage.getItem('countryId');
+            
+            if (!countryId) {
+                navigate("/start");
+                return;
+            }
 
-            const population = localStorage.getItem('population');
-
-            if (!population) navigate("/start");
-
-            const generatedStats = generateData(Number(population));
-            setStatistics(generatedStats);
+          
         };
 
         fetchData();
     }, []);
 
     return (
-        <div className="flex w-full min-h-screen bg-neutral">
+        <div className="flex flex-col md:flex-row w-full min-h-screen bg-neutral">
             {/* Left side - scrollable column */}
-            <div className="w-1/2 h-screen overflow-y-auto">
+            <div className="w-full md:w-1/2 h-auto md:h-screen overflow-y-auto">
                 <div className="p-2">
                     <Tittle />
                     <UserBox />
+                    <BackToStart />
                 </div>
             </div>
             
             {/* Right side - scrollable column */}
-            <div className="w-1/2 h-screen overflow-y-auto">
+            <div className="w-full md:w-1/2 h-auto md:h-screen overflow-y-auto">
                 <div className="space-y-2 p-2">
                     <Collapse title="Visualizations">
                         <VissualBox />

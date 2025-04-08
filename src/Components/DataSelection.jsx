@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Backend } from '../backend';
+import { getCountryData } from '../api/getCountryData';
+import { setCountry } from '../api/setCountry';
 
 // Dev mode control
 const DEV_MODE = true;
@@ -17,14 +18,12 @@ export default function DataSelection() {
     const [loading, setLoading] = useState(!DEV_MODE);
     const navigate = useNavigate();
 
-    const backend = new Backend();
-
     useEffect(() => {
         if (DEV_MODE) return;
 
         const fetchCountries = async () => {
             try {
-                const response = await backend.getCountries();
+                const response = await getCountryData();
                 setCountries(response.data);
             } catch (error) {
                 console.error('Error fetching countries:', error);
@@ -38,6 +37,7 @@ export default function DataSelection() {
 
     function handleCountrySelect(country) {
         setSelectedCountry(country);
+        localStorage.setItem('countryId', country.id);
         setErrorMessage(null);
     }
 
@@ -49,7 +49,7 @@ export default function DataSelection() {
         
         try {
             if (!DEV_MODE) {
-                await backend.setStartCountry(selectedCountry.id);
+                await setCountry(selectedCountry.id)
             }
             navigate('/');
         } catch (error) {
