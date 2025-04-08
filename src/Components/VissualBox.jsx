@@ -98,6 +98,22 @@ export default function VissualBox() {
                 </div>
             </div>
 
+            {/* <div className="w-full mt-8">
+                <h3 className="text-xl font-semibold text-[#d1e7dd] mb-4">AI Analysis</h3>
+                <div className="bg-[#2d4a2d] p-6 rounded-lg">
+                    <button 
+                        className="bg-[#4caf50] hover:bg-[#3d8b40] text-[#d1e7dd] font-medium py-2 px-4 rounded-lg transition-colors"
+                        onClick={async () => {
+                            const response = await getAIResponse("Analyze the current population trends and provide insights");
+                            console.log(response);
+                            // You can add additional logic here to display the response in the UI
+                        }}
+                    >
+                        Generate AI Insights
+                    </button>
+                </div>
+            </div> */}
+
             <p className="mt-4 text-[#a3c2a3] text-sm">Visual representation of population dynamics</p>
         </div>
     );

@@ -1,5 +1,5 @@
 import { setCountry } from './setCountry';
-import { updateCountrData } from './updateCountrData';
+import { updateCountrData } from './updateCountryData';
 import { getCountryData } from './getCountryData';
 
 class Backend {
