@@ -26,6 +26,12 @@ namespace Backend
             
         }
 
+        public void LoadFromJson(string json)
+        {
+            //all the same format
+            
+        }
+
         public void Update()
         {
             //temporarily set the data to an amount to allow the frontend to test if it displays properly
