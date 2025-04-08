@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
-import { Slider, Switch } from '@mui/material';
+import { Slider } from '@mui/material';
 import { updateCountryData } from '../api/updateCountryData';
 
 export default function UserBox() {
     const [formData, setFormData] = useState({
-        economy: 50,
-        populationChange: 'positive',
-        gdpLiving: '',
-        povertyRate: 0,
+        gdp: 0,
+        population: 0,
+        costOfLiving: 0,
         healthcareQuality: 'good',
+        diseaseSeverity: 0,
+        diseasePrevalence: 0,
+        immigrationRate: 0,
         fertilityRate: 2.1,
-        migration: 0,
-        mortality: 0,
-        crimeRate: 0,
-        cohortDynamics: 'stable',
-        isDeveloped: true
+        mortalityRate: 0,
+        healthcareResilience: 0
     });
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,104 +45,52 @@ export default function UserBox() {
         }));
     };
 
-    const handleSwitchChange = (name) => (e) => {
-        setFormData(prev => ({
-            ...prev,
-            [name]: e.target.checked
-        }));
-    };
-
-
     return (
         <div className="w-full max-w-2xl bg-gradient-to-br from-[#1a2e1a] to-[#0f1a0f] p-8 rounded-3xl shadow-2xl border border-[#2d4a2d]/50 backdrop-blur-sm">
             <h2 className="text-4xl font-bold bg-gradient-to-r from-[#d1e7dd] to-[#a8d5b9] bg-clip-text text-transparent mb-8">Population Dynamics Input</h2>
             <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Economy Status */}
+                    {/* GDP */}
                     <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
                         <label className="label mb-3">
-                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Economy Strength</span>
-                        </label>
-                        <Slider
-                            value={formData.economy}
-                            onChange={handleSliderChange('economy')}
-                            aria-labelledby="economy-slider"
-                            valueLabelDisplay="auto"
-                            min={0}
-                            max={100}
-                            sx={{
-                                color: '#4caf50',
-                                '& .MuiSlider-thumb': {
-                                    backgroundColor: '#4caf50',
-                                    boxShadow: '0 0 0 4px rgba(76, 175, 80, 0.2)',
-                                },
-                                '& .MuiSlider-track': {
-                                    backgroundColor: '#4caf50',
-                                },
-                                '& .MuiSlider-rail': {
-                                    backgroundColor: '#2d4a2d',
-                                },
-                            }}
-                        />
-                    </div>
-
-                    {/* Population Change */}
-                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
-                        <label className="label mb-3">
-                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Population Change</span>
-                        </label>
-                        <div className="flex space-x-4">
-                            <label className="flex items-center text-[#d1e7dd] hover:text-[#4caf50] transition-colors">
-                                <input
-                                    type="radio"
-                                    name="populationChange"
-                                    value="positive"
-                                    checked={formData.populationChange === 'positive'}
-                                    onChange={handleChange}
-                                    className="mr-2 accent-[#4caf50] w-4 h-4"
-                                />
-                                Positive
-                            </label>
-                            <label className="flex items-center text-[#d1e7dd] hover:text-[#4caf50] transition-colors">
-                                <input
-                                    type="radio"
-                                    name="populationChange"
-                                    value="negative"
-                                    checked={formData.populationChange === 'negative'}
-                                    onChange={handleChange}
-                                    className="mr-2 accent-[#4caf50] w-4 h-4"
-                                />
-                                Negative
-                            </label>
-                        </div>
-                    </div>
-
-                    {/* GDP per Capita */}
-                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
-                        <label className="label mb-3">
-                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">GDP per Capita</span>
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">GDP</span>
                         </label>
                         <input
                             type="number"
-                            name="gdpLiving"
-                            value={formData.gdpLiving}
+                            name="gdp"
+                            value={formData.gdp}
                             onChange={handleChange}
                             className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d]/30 bg-[#1a2e1a]/20 text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50]/50 focus:border-[#4caf50]/50 transition-all"
                             placeholder="Enter GDP"
                             min="0"
-                            step="100"
                         />
                     </div>
 
-                    {/* Poverty Rate */}
+                    {/* Population */}
+                    <div className="form-control bg[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Population</span>
+                        </label>
+                        <input
+                            type="number"
+                            name="population"
+                            value={formData.population}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d]/30 bg-[#1a2e1a]/20 text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50]/50 focus:border-[#4caf50]/50 transition-all"
+                            placeholder="Enter Population"
+                            min="0"
+                        />
+                    </div>
+
+                    {/* Cost of Living */}
                     <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
                         <label className="label mb-3">
-                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Poverty Rate</span>
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Cost of Living</span>
                         </label>
                         <Slider
-                            value={formData.povertyRate}
-                            onChange={handleSliderChange('povertyRate')}
-                            aria-labelledby="poverty-rate-slider"
+                            value={formData.costOfLiving}
+                            onChange={handleSliderChange('costOfLiving')}
+                            aria-labelledby="cost-of-living-slider"
                             valueLabelDisplay="auto"
                             min={0}
                             max={100}
@@ -192,7 +138,7 @@ export default function UserBox() {
                                 />
                                 Average
                             </label>
-                            <label className="flex items-center text-[#d1e7dd] hover:text-[#4caf50] transition-colors">
+                            <label className="flex items-center text[#d1e7dd] hover:text-[#4caf50] transition-colors">
                                 <input
                                     type="radio"
                                     name="healthcareQuality"
@@ -235,114 +181,77 @@ export default function UserBox() {
                         />
                     </div>
 
-                    {/* Migration */}
+                    {/* Immigration Rate */}
                     <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
                         <label className="label mb-3">
-                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Migration Rate</span>
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Immigration Rate</span>
                         </label>
                         <input
                             type="number"
-                            name="migration"
-                            value={formData.migration}
+                            name="immigrationRate"
+                            value={formData.immigrationRate}
                             onChange={handleChange}
                             className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
-                            placeholder="Enter migration rate"
+                            placeholder="Enter Immigration Rate"
                             min="-100"
                             max="100"
                         />
                     </div>
 
-                    {/* Mortality */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">Mortality Rate (per 1000 people)</span>
+                    {/* Emigration Rate */}
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Emigration Rate</span>
                         </label>
                         <input
                             type="number"
-                            name="mortality"
-                            value={formData.mortality}
+                            name="emigrationRate"
+                            value={formData.emigrationRate}
                             onChange={handleChange}
                             className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
-                            placeholder="Enter mortality rate"
+                            placeholder="Enter Emigration Rate"
+                            min="-100"
+                            max="100"
+                        />
+                    </div>
+
+                    {/* Birth Rate */}
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Birth Rate</span>
+                        </label>
+                        <input
+                            type="number"
+                            name="birthRate"
+                            value={formData.birthRate}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
+                            placeholder="Enter Birth Rate"
                             min="0"
                             max="100"
                         />
                     </div>
 
-                    {/* Crime Rate */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">Crime Rate (per 1000 people)</span>
+                    {/* Death Rate */}
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Death Rate</span>
                         </label>
-                        <Slider
-                            value={formData.crimeRate}
-                            onChange={handleSliderChange('crimeRate')}
-                            aria-labelledby="crime-rate-slider"
-                            valueLabelDisplay="auto"
-                            min={0}
-                            max={100}
-                            sx={{
-                                color: '#4caf50',
-                                '& .MuiSlider-thumb': {
-                                    backgroundColor: '#4caf50',
-                                },
-                                '& .MuiSlider-track': {
-                                    backgroundColor: '#4caf50',
-                                },
-                            }}
-                        />
-                    </div>
-
-                    {/* Cohort Dynamics */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">Cohort Dynamics</span>
-                        </label>
-                        <select 
-                            name="cohortDynamics"
-                            value={formData.cohortDynamics}
+                        <input
+                            type="number"
+                            name="deathRate"
+                            value={formData.deathRate}
                             onChange={handleChange}
                             className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
-                        >
-                            <option value="stable">Stable</option>
-                            <option value="changing">Changing</option>
-                            <option value="volatile">Volatile</option>
-                        </select>
-                    </div>
-
-                    {/* Developed Country */}
-                    <div className="form-control flex items-center">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium mr-4">Developed Country</span>
-                        </label>
-                        <Switch
-                            checked={formData.isDeveloped}
-                            onChange={handleSwitchChange('isDeveloped')}
-                            color="primary"
-                            sx={{
-                                '& .MuiSwitch-switchBase.Mui-checked': {
-                                    color: '#4caf50',
-                                },
-                                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                                    backgroundColor: '#4caf50',
-                                },
-                            }}
+                            placeholder="Enter Death Rate"
+                            min="0"
+                            max="100"
                         />
                     </div>
                 </div>
-
-                <div className="mt-8">
-                    <button
-                        type="submit"
-                        className="w-full px-6 py-3 bg-[#4caf50] text-[#d1e7dd] font-semibold rounded-lg hover:bg-[#3d8b40] transition-all transform hover:scale-[1.02] active:scale-95"
-                        onClick={() => {
-                            console.log('Submit button clicked');
-                            handleSubmit();
-                        }}
-                    >
-                        Submit Data
-                    </button>
-                </div>
+                <button type="submit" className="w-full py-3 px-6 bg-gradient-to-r from-[#4caf50] to-[#388e3c] text-white font-semibold rounded-lg hover:from-[#388e3c] hover:to-[#2e7d32] transition-all">
+                    Submit Data
+                </button>
             </form>
         </div>
     );
