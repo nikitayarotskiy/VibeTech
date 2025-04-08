@@ -4,74 +4,108 @@ namespace Backend
 {
     public class Country
     {
-        //economy related
-        
-        /// <summary>
-        /// cost of living, dollar value
-        /// </summary>
-        public double livingCost { get; set; }
-        
-        //population related
-        /// <summary>
-        /// how many citizens are born per month, one int is one citizen
-        /// </summary>
-        public double fertilityRate { get; set; }
-        /// <summary>
-        /// scale of zero to one, zero means that every disease is uncurable, one means that every disease is cured
-        /// </summary>
-        public double healthCareStrength { get; set; }
-        /// <summary>
-        /// scale of zero to one, zero means that nobody gets diseases, one means that every citizen gets a disease every month
-        /// </summary>
-        public double diseaseRate { get; set; }
-        /// <summary>
-        /// strength of disease from zero to one, zero means that no death chance from disease, one means that every disease causes death
-        /// </summary>
-        public double diseaseStrength { get; set; }
-        /// <summary>
-        /// how many citizens are moving in per month, one int is once citizen
-        /// </summary>
-        public double immigrationRate { get; set; }
-        /// <summary>
-        /// how many citizens are moving out per month, one int is once citizen
-        /// </summary>
-        public double migrationRate { get; set; }
-        /// <summary>
-        /// how many citizens are dying per month, one int is once citizen
-        /// </summary>
-        public double mortalityRate { get; set; }
-        
-        //statistic related
-        /// <summary>
-        /// scale of zero to one, where zero is no poverty and one is every citizen is in poverty, if under livingCostPerGdpPerCapita for lots of time then the citizen is added to this number
-        /// </summary>
-        public double povertyRate { get; set; }
-        /// <summary>
-        /// scale of zero to one, zero meaning no crime and one meaning each citizen commits a crime every month
-        /// </summary>
-        public double crimeRate { get; set; }
-        
-        //internal simulation variables
-        /// <summary>
-        /// population of the country, no limit
-        /// </summary>
-        public double population { get; set; }
-        /// <summary>
-        /// gdp of the country, dollar value, no limit on number
-        /// </summary>
-        public double gdp { get; set; }
-        /// <summary>
-        /// inflation as a scalar 1.0f gives no inflation, 1.02f gives 2 percent, etc
-        /// </summary>
-        public double inflation { get; set; }
-        /// <summary>
-        /// gives a ratio of individual living cost and ratio per household, if it is 1 then you have an equal amount of income and expenses, over 1 and you have a ratio under one you are going in debt, more expenses and less income, if you have over 1 you have more income than expenses
-        /// </summary>
-        public double livingCostPerGdpPerCapita { get; set; }
-        /// <summary>
-        /// timer from zero to one for a disaster, it can be increased or decreased by factors in the country, if it hits one we have a disaster
-        /// </summary>
-        public double disasterChance { get; set; }
+      //note: we are dealing with big numbers, we are using 64 bit data types
+
+	//simulation variabes
+
+	//internal variables that are global
+	long population;
+
+	//internal variables for economy
+	long gdp;//dollar value
+	double lgc;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+	double oldlgc;//store old values to allow calculation of perception of state of the economy
+	double oldoldlgc;
+	double livingCost;//cost of living, dollar value
+	double inflation;//increase in cost of living, something like 1.02
+
+	//internal variabes for healthcare
+	double deltaHealth;//from 0-1
+	double healthcareEfficacy;//from 0-1 how many diseases result in death
+	double diseaseSeverity;//affects health care efficacy
+	double diseaseAmount;
+
+	//internal variables for immigration/migration
+	long immigrationRate;//amount of people immigrating and emmigrating summed
+	long baseImmigrationRate;//base immigration and migration rates, try to return to these
+
+	//internal variables for fertility
+	long baseFertility;//births per woman
+	long baseMortality;//deaths of the population as scalar
+	long fertility;//births per woman
+	long mortality;//deaths of the population as a scalar
+
+
+	//disaster types
+
+	//set default values for variables
+	population = 40000000;
+
+	gdp = 2100000000000;//dollar value
+	livingCost = 48000;//cost of living, dollar value
+	inflation = 1.02;//increase in cost of living, something like 1.02
+	lgc = (double)gdp / (double)population / (double)livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+	oldlgc = lgc;//store old values to allow calculation of perception of state of the economy
+	oldoldlgc = lgc;
+
+	deltaHealth = 1.0;//from 0-1
+	healthcareEfficacy = 0.95;//from 0-1 how many diseases result in death
+	diseaseSeverity = 0.2;//affects health care efficacy
+	diseaseAmount = 0.05;
+
+	immigrationRate = 39166;//amount of people immigrating and emmigrating summed
+	baseImmigrationRate = 37500;
+
+	baseFertility = 1.33;
+	baseMortality = 0.08;
+	fertility = 1.33;
+	mortality = 0.08;
+
+	//logic
+	int simMonths = 12;
+	for (int i = 0; i < simMonths; i++)
+	{
+	double baselgc = 1.2;
+	int economicState = 0;
+	inflation = 1.02;//determine inflation
+	if (lgc < baselgc) inflation = 1.03;//cost of living up, inflation up
+	if (lgc > baselgc) inflation = 1.01;//cost of living down, inflation down
+	//determine living cost
+	livingCost *= inflation;
+	//determine lgc
+	oldoldlgc = old;
+	oldlgc = lgc;
+	lgc = (double)gdp / (double)population / (double)livingCost / 1.2;
+	//determine the economic state
+	deltaLGC = lgc - oldlgc;
+	oldDeltaLGC = oldlgc - oldoldlgc;
+	if (deltaLGC * oldDeltaLGC < 0.0 && abs(deltaLGC + oldDeltaLGC) < 0.4)//if economy is stable
+	{
+		economicState = 3;//stable economy
+	}
+	else if (deltaLGC > 0.0)//increasing economy
+	{
+		if ()//increasing stable
+		{
+			economicState = 4;
+		}
+		else if ()//increasing increasing
+		{
+			economicState = 5;
+		}
+	}
+	else if (deltaLGC < 0.0)//decreasing economy
+	{
+		if ()//decreasing stable
+		{
+			economicState = 2;
+		}
+		else if ()//decreasing decreasing
+		{
+			economicState = 1;
+		}
+	}
+	//determine new gdp
         
         //posible disasters: rapid inflation(economic crash), mass disease, mass immigration/migration, cost of living increase, political disaster, etc
 
