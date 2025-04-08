@@ -5,6 +5,8 @@ import PopulationGrid from '../Components/PopulationGrid';
 import { generateData, generateList } from '../logic';
 import Buttons from '../Components/Buttons';
 import UserBox from '../Components/UserBox';
+import OutputBox from '../Components/OutputBox';
+import VissualBox from '../Components/VissualBox';
 
 
 export default function Home() {
@@ -49,6 +51,8 @@ export default function Home() {
             </div> */}
 
             <UserBox />
+            <OutputBox />
+            <VissualBox />
 
         </div>
     );
