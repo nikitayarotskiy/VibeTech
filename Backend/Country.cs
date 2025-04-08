@@ -75,7 +75,7 @@ namespace Backend
 
 	        immigrationRate = 39166;//amount of people immigrating and emmigrating summed
 	        baseImmigrationRate = 37500;
-	        cev.immigrationCoefficient = (double)cev.population / (double)baseImmigrationRate;
+	        cev.immigrationCoefficient = (double)baseImmigrationRate / (double)cev.population;
 
 	        cev.baseFertility = 1.33;
 	        cev.baseMortality = 0.08;
@@ -121,7 +121,7 @@ namespace Backend
         public void Update(float dt)
         {
 	        storedTime += dt;
-	        if (storedTime > 2.0f)
+	        if (storedTime > 0.1f)
 	        {
 		        storedTime = 0.0f;
 		        oldPopulation = cev.population;
@@ -192,9 +192,12 @@ namespace Backend
 		        cev.baseFertility = 1.33;
 		        double lifeExpectancy = clamp(85 * cev.healthcareEfficacy, 40, 85); //life expectancy based on health care
 		        fertility = cev.baseFertility / (lifeExpectancy * 12.0); //set fertility to 
-		        cev.population = cev.population + (long)((immigrationRate) + (cev.population * mortality) + (cev.population * fertility));
+		        cev.population = cev.population + (long)((immigrationRate) - (cev.population * mortality) + (cev.population * fertility));
+		        
 	        }
-	        
+
+	        Console.WriteLine(cev.population);
+
         }
         
     }

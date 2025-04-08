@@ -28,7 +28,7 @@ namespace Backend
             for (int i = 0; i < countryCount; i++)
             {
                 countries[i].Update(dt);
-                Console.WriteLine(countries[i].LoadToJson());
+                //Console.WriteLine(countries[i].LoadToJson());
             }
         }
     }

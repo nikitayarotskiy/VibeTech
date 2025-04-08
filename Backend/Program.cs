@@ -12,7 +12,7 @@ namespace Backend
         static void Main(string[] args)
         {
             World.Init();
-            Sender.Init();
+            //Sender.Init();
             
             lastTime = DateTime.Now.ToUniversalTime().Second + (DateTime.Now.ToUniversalTime().Millisecond / 1000f);
             
@@ -28,7 +28,7 @@ namespace Backend
                 {
                     totalTimeUpdate -= Global.updateRate;
                     World.Update(totalTimeUpdate);
-                    Sender.Listen();
+                    //Sender.Listen();
                 }
 
                 lastTime = currentTime;
