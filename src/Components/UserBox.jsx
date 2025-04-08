@@ -44,14 +44,14 @@ export default function UserBox() {
     };
 
     return (
-        <div className="w-full max-w-2xl bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Population Dynamics Input</h2>
+        <div className="w-full max-w-2xl bg-[#1a2e1a] p-8 rounded-2xl shadow-2xl border border-[#2d4a2d] font-sans">
+            <h2 className="text-3xl font-bold text-[#d1e7dd] mb-6">Population Dynamics Input</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-6">
                     {/* Economy Status */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">Economy Strength (0-100)</span>
+                            <span className="text-[#d1e7dd] font-medium">Economy Strength (0-100)</span>
                         </label>
                         <Slider
                             value={formData.economy}
@@ -60,34 +60,43 @@ export default function UserBox() {
                             valueLabelDisplay="auto"
                             min={0}
                             max={100}
+                            sx={{
+                                color: '#4caf50',
+                                '& .MuiSlider-thumb': {
+                                    backgroundColor: '#4caf50',
+                                },
+                                '& .MuiSlider-track': {
+                                    backgroundColor: '#4caf50',
+                                },
+                            }}
                         />
                     </div>
 
                     {/* Population Change */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">Population Change</span>
+                            <span className="text-[#d1e7dd] font-medium">Population Change</span>
                         </label>
                         <div className="flex space-x-4">
-                            <label className="flex items-center">
+                            <label className="flex items-center text-[#d1e7dd]">
                                 <input
                                     type="radio"
                                     name="populationChange"
                                     value="positive"
                                     checked={formData.populationChange === 'positive'}
                                     onChange={handleChange}
-                                    className="mr-2"
+                                    className="mr-2 accent-[#4caf50]"
                                 />
                                 Positive
                             </label>
-                            <label className="flex items-center">
+                            <label className="flex items-center text-[#d1e7dd]">
                                 <input
                                     type="radio"
                                     name="populationChange"
                                     value="negative"
                                     checked={formData.populationChange === 'negative'}
                                     onChange={handleChange}
-                                    className="mr-2"
+                                    className="mr-2 accent-[#4caf50]"
                                 />
                                 Negative
                             </label>
@@ -97,14 +106,14 @@ export default function UserBox() {
                     {/* GDP per Capita */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">GDP per Capita (USD)</span>
+                            <span className="text-[#d1e7dd] font-medium">GDP per Capita (USD)</span>
                         </label>
                         <input
                             type="number"
                             name="gdpLiving"
                             value={formData.gdpLiving}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
                             placeholder="Enter GDP"
                             min="0"
                             step="100"
@@ -114,7 +123,7 @@ export default function UserBox() {
                     {/* Poverty Rate */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">Poverty Rate (%)</span>
+                            <span className="text-[#d1e7dd] font-medium">Poverty Rate (%)</span>
                         </label>
                         <Slider
                             value={formData.povertyRate}
@@ -123,45 +132,54 @@ export default function UserBox() {
                             valueLabelDisplay="auto"
                             min={0}
                             max={100}
+                            sx={{
+                                color: '#4caf50',
+                                '& .MuiSlider-thumb': {
+                                    backgroundColor: '#4caf50',
+                                },
+                                '& .MuiSlider-track': {
+                                    backgroundColor: '#4caf50',
+                                },
+                            }}
                         />
                     </div>
 
                     {/* Healthcare Quality */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">Healthcare Quality</span>
+                            <span className="text-[#d1e7dd] font-medium">Healthcare Quality</span>
                         </label>
                         <div className="flex space-x-4">
-                            <label className="flex items-center">
+                            <label className="flex items-center text-[#d1e7dd]">
                                 <input
                                     type="radio"
                                     name="healthcareQuality"
                                     value="good"
                                     checked={formData.healthcareQuality === 'good'}
                                     onChange={handleChange}
-                                    className="mr-2"
+                                    className="mr-2 accent-[#4caf50]"
                                 />
                                 Good
                             </label>
-                            <label className="flex items-center">
+                            <label className="flex items-center text-[#d1e7dd]">
                                 <input
                                     type="radio"
                                     name="healthcareQuality"
                                     value="average"
                                     checked={formData.healthcareQuality === 'average'}
                                     onChange={handleChange}
-                                    className="mr-2"
+                                    className="mr-2 accent-[#4caf50]"
                                 />
                                 Average
                             </label>
-                            <label className="flex items-center">
+                            <label className="flex items-center text-[#d1e7dd]">
                                 <input
                                     type="radio"
                                     name="healthcareQuality"
                                     value="poor"
                                     checked={formData.healthcareQuality === 'poor'}
                                     onChange={handleChange}
-                                    className="mr-2"
+                                    className="mr-2 accent-[#4caf50]"
                                 />
                                 Poor
                             </label>
@@ -171,7 +189,7 @@ export default function UserBox() {
                     {/* Fertility Rate */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">Fertility Rate (children per woman)</span>
+                            <span className="text-[#d1e7dd] font-medium">Fertility Rate (children per woman)</span>
                         </label>
                         <Slider
                             value={formData.fertilityRate}
@@ -181,20 +199,29 @@ export default function UserBox() {
                             min={0}
                             max={10}
                             step={0.1}
+                            sx={{
+                                color: '#4caf50',
+                                '& .MuiSlider-thumb': {
+                                    backgroundColor: '#4caf50',
+                                },
+                                '& .MuiSlider-track': {
+                                    backgroundColor: '#4caf50',
+                                },
+                            }}
                         />
                     </div>
 
                     {/* Migration */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">Net Migration Rate (per 1000 people)</span>
+                            <span className="text-[#d1e7dd] font-medium">Net Migration Rate (per 1000 people)</span>
                         </label>
                         <input
                             type="number"
                             name="migration"
                             value={formData.migration}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
                             placeholder="Enter migration rate"
                             min="-100"
                             max="100"
@@ -204,14 +231,14 @@ export default function UserBox() {
                     {/* Mortality */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">Mortality Rate (per 1000 people)</span>
+                            <span className="text-[#d1e7dd] font-medium">Mortality Rate (per 1000 people)</span>
                         </label>
                         <input
                             type="number"
                             name="mortality"
                             value={formData.mortality}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
                             placeholder="Enter mortality rate"
                             min="0"
                             max="100"
@@ -221,7 +248,7 @@ export default function UserBox() {
                     {/* Crime Rate */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">Crime Rate (per 1000 people)</span>
+                            <span className="text-[#d1e7dd] font-medium">Crime Rate (per 1000 people)</span>
                         </label>
                         <Slider
                             value={formData.crimeRate}
@@ -230,19 +257,28 @@ export default function UserBox() {
                             valueLabelDisplay="auto"
                             min={0}
                             max={100}
+                            sx={{
+                                color: '#4caf50',
+                                '& .MuiSlider-thumb': {
+                                    backgroundColor: '#4caf50',
+                                },
+                                '& .MuiSlider-track': {
+                                    backgroundColor: '#4caf50',
+                                },
+                            }}
                         />
                     </div>
 
                     {/* Cohort Dynamics */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="text-gray-700 font-medium">Cohort Dynamics</span>
+                            <span className="text-[#d1e7dd] font-medium">Cohort Dynamics</span>
                         </label>
                         <select 
                             name="cohortDynamics"
                             value={formData.cohortDynamics}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
                         >
                             <option value="stable">Stable</option>
                             <option value="changing">Changing</option>
@@ -253,12 +289,20 @@ export default function UserBox() {
                     {/* Developed Country */}
                     <div className="form-control flex items-center">
                         <label className="label">
-                            <span className="text-gray-700 font-medium mr-4">Developed Country</span>
+                            <span className="text-[#d1e7dd] font-medium mr-4">Developed Country</span>
                         </label>
                         <Switch
                             checked={formData.isDeveloped}
                             onChange={handleSwitchChange('isDeveloped')}
                             color="primary"
+                            sx={{
+                                '& .MuiSwitch-switchBase.Mui-checked': {
+                                    color: '#4caf50',
+                                },
+                                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                                    backgroundColor: '#4caf50',
+                                },
+                            }}
                         />
                     </div>
                 </div>
@@ -266,7 +310,7 @@ export default function UserBox() {
                 <div className="mt-8">
                     <button
                         type="submit"
-                        className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all transform hover:scale-[1.02] active:scale-95"
+                        className="w-full px-6 py-3 bg-[#4caf50] text-[#d1e7dd] font-semibold rounded-lg hover:bg-[#3d8b40] transition-all transform hover:scale-[1.02] active:scale-95"
                     >
                         Submit Data
                     </button>
@@ -275,4 +319,3 @@ export default function UserBox() {
         </div>
     );
 }
-
