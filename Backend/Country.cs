@@ -5,7 +5,15 @@ namespace Backend
 
 	public struct CEV
 	{
-		
+		public long population {get; set;}
+		public long gdp { get; set; }//dollar value
+		public double livingCost {get; set;}//cost of living, dollar value
+		public double healthcareEfficacy {get; set;}//from 0-1 how many diseases result in death
+		public double diseaseSeverity {get; set;}//affects health care efficacy
+		public double diseaseAmount {get; set;}
+		public long baseImmigrationRate {get; set;}//base immigration and migration rates, try to return to these
+		public long baseFertility {get; set;}//births per woman
+		public long baseMortality {get; set;}//deaths of the population as scalar
 	}
 	
     public class Country
