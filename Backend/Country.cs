@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace Backend
 {
     public class Country
@@ -40,6 +42,19 @@ namespace Backend
         {
             //all the same format
             
+        }
+
+        public string LoadToJson()
+        {
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                AllowTrailingCommas = true,
+            };
+
+            string json = JsonSerializer.Serialize(this, options);
+            return json;
         }
 
         public void Update()

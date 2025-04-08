@@ -11,15 +11,18 @@ namespace Backend
             for (int i = 0; i < countryCount; i++)
             {
                 //pass in data here to country
-                countries[i] = new Country();
+                countries.Add(new Country());
                 //load from index of json
                 countries[i].LoadFromJson("");
             }
         }
 
-        public static void Update()
+        public static void Update(float dt)
         {
-            
+            for (int i = 0; i < countryCount; i++)
+            {
+                countries[i].Update();
+            }
         }
     }
 }
