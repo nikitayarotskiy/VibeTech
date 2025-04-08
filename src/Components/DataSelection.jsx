@@ -2,70 +2,60 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Backend } from '../backend';
 
+// Dev mode control
+const DEV_MODE = true;
+const TEST_COUNTRIES = [
+    { id: 1, name: 'Test Country A', flag: 'https://flagcdn.com/us.svg' },
+    { id: 2, name: 'Test Country B', flag: 'https://flagcdn.com/ca.svg' },
+    { id: 3, name: 'Test Country C', flag: 'https://flagcdn.com/gb.svg' }
+];
+
 export default function DataSelection() {
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const [flag, setFlag] = useState('');
-    const [selectedCountryPopulation, setSelectedCountryPopulation] = useState(null);
+    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [countries, setCountries] = useState(DEV_MODE ? TEST_COUNTRIES : []);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [isValidCountry, setIsValidCountry] = useState(false);
+    const [loading, setLoading] = useState(!DEV_MODE);
     const navigate = useNavigate();
 
     const backend = new Backend();
 
-    const countries = [
-        "Canada",
-        "United States",
-        "United Kingdom",
-        "Australia",
-        "Germany",
-        "France",
-        "Japan",
-        "India",
-        "Italy",
-        "Spain",
-        "Brazil",
-        "Mexico",
-        "Russia",
-        "China",
-        "South Korea",
-        "Netherlands",
-        "Sweden",
-        "Norway",
-        "New Zealand",
-        "Singapore",
-        "Switzerland",
-        "South Africa",
-        "Turkey",
-        "Thailand",
-        "Argentina",
-        "Poland",
-        "Portugal",
-        "Greece",
-        "Israel",
-        "Ireland",
-        "Malaysia",
-        "Philippines"
-    ];
-
     useEffect(() => {
-        setIsValidCountry(false);
+        if (DEV_MODE) return;
+
+        const fetchCountries = async () => {
+            try {
+                const response = await backend.getCountries();
+                setCountries(response.data);
+            } catch (error) {
+                console.error('Error fetching countries:', error);
+                setErrorMessage('Failed to load countries. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCountries();
     }, []);
 
-    function handleInputChange(e) {
-        setSelectedCountry(e.target.value);
-        setIsValidCountry(false);
+    function handleCountrySelect(country) {
+        setSelectedCountry(country);
         setErrorMessage(null);
-        setSelectedCountryPopulation(null);
     }
 
-    async function calculatePopulation() {
-        setIsValidCountry(true);
-    }
-
-    function handleStart() {
-        localStorage.setItem('country', selectedCountry);
-        localStorage.setItem('population', selectedCountryPopulation);
-        navigate('/');
+    async function handleStart() {
+        if (!selectedCountry) {
+            setErrorMessage('Please select a country');
+            return;
+        }
+        
+        try {
+            if (!DEV_MODE) {
+                await backend.setStartCountry(selectedCountry.id);
+            }
+            navigate('/');
+        } catch (error) {
+            console.error('Error setting start country:', error);
+            setErrorMessage('Failed to start simulation. Please try again.');
+        }
     }
 
     return (
@@ -76,43 +66,54 @@ export default function DataSelection() {
                         Select Country
                     </span>
                 </label>
-                <div className="relative">
-                    <input
-                        list="countries"
-                        className="w-full px-6 py-4 rounded-xl border-2 border-[#2d4a2d] focus:border-[#4caf50] focus:ring-2 focus:ring-[#4caf50] transition-all text-[#d1e7dd] placeholder-[#a3c2a3] bg-[#1a2e1a] shadow-sm"
-                        placeholder="Choose a country"
-                        value={selectedCountry}
-                        onChange={handleInputChange}
-                    />
-                    <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                        <svg className="w-6 h-6 text-[#a3c2a3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
+                {loading ? (
+                    <div className="text-center py-8">
+                        <span className="text-[#d1e7dd]">Loading countries...</span>
                     </div>
-                </div>
-                <datalist id="countries">
-                    {countries.map((country, index) => (
-                        <option key={index} value={country} />
-                    ))}
-                </datalist>
+                ) : (
+                    <div className="w-full max-h-96 overflow-y-auto bg-[#1a2e1a]/50 rounded-xl border border-[#2d4a2d]/30">
+                        {countries.length > 0 ? (
+                            countries.map((country) => (
+                                <div
+                                    key={country.id}
+                                    className={`flex items-center p-4 cursor-pointer hover:bg-[#2d4a2d]/50 transition-colors ${
+                                        selectedCountry?.id === country.id ? 'bg-[#2d4a2d]/70' : ''
+                                    }`}
+                                    onClick={() => handleCountrySelect(country)}
+                                >
+                                    <img 
+                                        src={country.flag} 
+                                        alt={country.name} 
+                                        className="w-8 h-6 mr-4 rounded-sm object-cover"
+                                    />
+                                    <span className="text-[#d1e7dd]">{country.name}</span>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="p-4 text-center text-[#d1e7dd]">
+                                No countries available. {errorMessage && <span className="text-red-500">{errorMessage}</span>}
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
 
             <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-[#2d4a2d] to-transparent my-6"></div>
 
             <div className="w-full min-h-[120px] flex flex-col items-center justify-center my-6 p-4 rounded-xl bg-[#2d4a2d] border border-[#1a2e1a]">
-                {!isValidCountry && (
+                {!selectedCountry && (
                     <h2 className="text-[#a3c2a3] text-lg text-center font-medium">
-                        Select a country to see population
+                        Select a country to begin
                     </h2>
                 )}
 
-                {selectedCountryPopulation && (
+                {selectedCountry && (
                     <div className="flex flex-col items-center space-y-3">
                         <div className="w-28 h-20 flex justify-center items-center overflow-hidden rounded-lg shadow-md border border-[#1a2e1a]">
-                            <img src={flag} alt="Country Flag" className="object-cover w-full h-full" />
+                            <img src={selectedCountry.flag} alt="Country Flag" className="object-cover w-full h-full" />
                         </div>
                         <h3 className="text-[#d1e7dd] text-xl font-bold">
-                            Population: {selectedCountryPopulation.toLocaleString()}
+                            {selectedCountry.name}
                         </h3>
                     </div>
                 )}
@@ -128,21 +129,13 @@ export default function DataSelection() {
 
             <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-[#2d4a2d] to-transparent my-6"></div>
 
-            {isValidCountry ? (
-                <button
-                    className="w-full h-16 rounded-xl bg-[#4caf50] text-[#d1e7dd] text-2xl font-bold hover:bg-[#3d8b40] transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg"
-                    onClick={handleStart}
-                >
-                    START
-                </button>
-            ) : (
-                <button
-                    className="w-full h-16 rounded-xl bg-[#2d4a2d] text-[#d1e7dd] text-2xl font-bold hover:bg-[#1a2e1a] transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg"
-                    onClick={calculatePopulation}
-                >
-                    Check Population
-                </button>
-            )}
+            <button
+                className="w-full h-16 rounded-xl bg-[#4caf50] text-[#d1e7dd] text-2xl font-bold hover:bg-[#3d8b40] transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg"
+                onClick={handleStart}
+                disabled={!selectedCountry}
+            >
+                START
+            </button>
         </div>
     );
 }

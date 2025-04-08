@@ -5,6 +5,7 @@ import UserBox from '../Components/UserBox';
 import OutputBox from '../Components/OutputBox';
 import VissualBox from '../Components/VissualBox';
 import Collapse from '../Components/Collapse';
+import Tittle from '../Components/Tittle';
 
 
 export default function Home() {
@@ -32,6 +33,7 @@ export default function Home() {
             {/* Left side - scrollable column */}
             <div className="w-1/2 h-screen overflow-y-auto">
                 <div className="p-2">
+                    <Tittle />
                     <UserBox />
                 </div>
             </div>

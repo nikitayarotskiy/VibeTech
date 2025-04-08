@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from './apiConfig';
 
-export async function sendUserData(formData) {
+export async function sendData(formData) {
     try {
         const response = await fetch(API_ENDPOINTS.SEND_DATA, {
             method: 'POST',

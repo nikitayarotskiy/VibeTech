@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Slider, Switch } from '@mui/material';
+import { sendData } from '../api/sendData';
 
 export default function UserBox() {
     const [formData, setFormData] = useState({
@@ -16,31 +17,18 @@ export default function UserBox() {
         isDeveloped: true
     });
 
-    const sendDataToAPI = async () => {
-        try {
-            const response = await fetch('http://localhost:4000/api/lifeleap/sendData', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const result = await response.json();
-            console.log('Data successfully sent:', result);
-        } catch (error) {
-            console.error('Error sending data:', error);
-        }
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
-        sendDataToAPI();
+        try {
+            const response = await sendData(formData);
+            if (response) {
+                console.log('Data sent successfully:', response);
+            } else {
+                console.error('Failed to send data');
+            }
+        } catch (error) {
+            console.error('Error sending user data:', error);
+        }
     };
 
     const handleChange = (e) => {
@@ -67,7 +55,7 @@ export default function UserBox() {
 
 
     return (
-        <div className="w-full max-w-2xl bg-gradient-to-br from-[#1a2e1a] to-[#0f1a0f] p-8 rounded-3xl shadow-2xl border border-[#2d4a2d]/50 backdrop-blur-sm font-sans">
+        <div className="w-full max-w-2xl bg-gradient-to-br from-[#1a2e1a] to-[#0f1a0f] p-8 rounded-3xl shadow-2xl border border-[#2d4a2d]/50 backdrop-blur-sm">
             <h2 className="text-4xl font-bold bg-gradient-to-r from-[#d1e7dd] to-[#a8d5b9] bg-clip-text text-transparent mb-8">Population Dynamics Input</h2>
             <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -256,7 +244,6 @@ export default function UserBox() {
                             name="migration"
                             value={formData.migration}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d]/30 bg-[#1a2e1a]/20 text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50]/50 focus:border-[#4caf50]/50 transition-all"
                             className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
                             placeholder="Enter migration rate"
                             min="-100"
