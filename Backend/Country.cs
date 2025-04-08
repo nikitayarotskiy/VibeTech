@@ -79,10 +79,11 @@ namespace Backend
         //population
         //economy goodness(affects all economic variables?)
         //country health(affectsfertility/birth rate and healthcare and disease and etc)
+
         
         public void Init()
         {
-            
+            fertilityRate = 10;
         }
 
         public void LoadFromJson(string json)
@@ -104,11 +105,13 @@ namespace Backend
             return json;
         }
 
-        public void Update()
+        public void Update(float dt)
         {
+            population += fertilityRate * dt;
+            
             //temporarily set the data to an amount to allow the frontend to test if it displays properly
             //this is not necesarily indicitave of what the data values should be, just test values
-            livingCost = 10.0f;
+            /*livingCost = 10.0f;
             
             //population related
             fertilityRate = 10.0f;
@@ -124,7 +127,7 @@ namespace Backend
             //internal simulation variables
             population = 10.0f;
             gdp = 10.0f;
-            livingCostPerGdpPerCapita = 10.0f;
+            livingCostPerGdpPerCapita = 10.0f;*/
         }
         
     }

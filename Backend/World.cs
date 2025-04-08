@@ -12,6 +12,7 @@ namespace Backend
             {
                 //pass in data here to country
                 countries.Add(new Country());
+                countries[i].Init();
                 //load from index of json
                 countries[i].LoadFromJson("");
             }
@@ -21,7 +22,8 @@ namespace Backend
         {
             for (int i = 0; i < countryCount; i++)
             {
-                countries[i].Update();
+                countries[i].Update(dt);
+                //Console.WriteLine(countries[i].population);
             }
         }
     }

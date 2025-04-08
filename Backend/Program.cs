@@ -11,6 +11,7 @@ namespace Backend
         static void Main(string[] args)
         {
             World.Init();
+            lastTime = DateTime.Now.ToUniversalTime().Second + (DateTime.Now.ToUniversalTime().Millisecond / 1000f);
             
             while (true)
             {
