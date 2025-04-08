@@ -11,7 +11,7 @@ namespace Backend
 		public double healthcareEfficacy {get; set;}//from 0-1 how many diseases result in death
 		public double diseaseSeverity {get; set;}//affects health care efficacy
 		public double diseaseAmount {get; set;}
-		public long baseImmigrationRate {get; set;}//base immigration and migration rates, try to return to these
+		public long immigrationCoefficient {get; set;}
 		public long baseFertility {get; set;}//births per woman
 		public long baseMortality {get; set;}//deaths of the population as scalar
 
@@ -47,7 +47,32 @@ namespace Backend
         
         public void Init()
         {
-            
+	        //disaster types
+
+	        //set default values for variables
+	        CEV.population = 40000000;
+	        oldPopulation = 40000000;
+
+	        CEV.gdp = 2100000000000;//dollar value
+	        CEV.livingCost = 48000;//cost of living, dollar value
+	        inflation = 1.02;//increase in cost of living, something like 1.02
+	        lgc = (double)CEV.gdp / (double)CEV.population / (double)CEV.livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+	        oldlgc = lgc;//store old values to allow calculation of perception of state of the economy
+	        oldoldlgc = lgc;
+
+	        deltaHealth = 1.1;//from 0-1, resiliance
+	        CEV.healthcareEfficacy = 0.95;//from 0-1 how many diseases result in death
+	        CEV.diseaseSeverity = 0.2;//affects health care efficacy
+	        CEV.diseaseAmount = 0.05;
+
+	        immigrationRate = 39166;//amount of people immigrating and emmigrating summed
+	        baseImmigrationRate = 37500;
+	        CEV.immigrationCoefficient = (double)CEV.population / (double)baseImmigrationRate;
+
+	        CEV.baseFertility = 1.33;
+	        CEV.baseMortality = 0.08;
+	        fertility = 1.33;
+	        mortality = 0.08;
         }
 
         public void LoadFromJson(string json)
