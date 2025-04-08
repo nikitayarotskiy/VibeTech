@@ -3,7 +3,7 @@ namespace Backend
     public static class World
     {
         public static List<Country> countries;
-        public static int countryCount = 195;
+        public static int countryCount = 3;
 
         public static void Init()
         {
@@ -23,7 +23,7 @@ namespace Backend
             for (int i = 0; i < countryCount; i++)
             {
                 countries[i].Update(dt);
-                //Console.WriteLine(countries[i].population);
+                Console.WriteLine(countries[i].LoadToJson());
             }
         }
     }

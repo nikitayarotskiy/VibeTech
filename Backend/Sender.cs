@@ -47,7 +47,7 @@ namespace Backend
             response.ContentLength64 = buffer.Length;
             string myString = System.Text.ASCIIEncoding.Default.GetString(buffer);
             Console.WriteLine(myString);
-            response.OutputStream.Write(System.Text.Encoding.UTF8.GetBytes(myString));
+            response.OutputStream.Write(System.Text.Encoding.UTF8.GetBytes("{\"population\":40000000,\"gdp\":2100000000000,\"lgc\":1.09375,\"oldlgc\":1.09375,\"oldoldlgc\":1.09375,\"livingCost\":48000,\"inflation\":1.02,\"deltaHealth\":1,\"healthcareEfficacy\":0.95,\"diseaseSeverity\":0.2,\"diseaseAmount\":0.05,\"immigrationRate\":39166,\"baseImmigrationRate\":37500,\"baseFertility\":0,\"baseMortality\":0,\"fertility\":0,\"mortality\":0}\n"));
             response.Close();
         }
     }

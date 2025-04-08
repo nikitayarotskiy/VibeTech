@@ -2,8 +2,15 @@ using System.Text.Json;
 
 namespace Backend
 {
+
+	public struct CountryEnviormentVariables
+	{
+		
+	}
+	
     public class Country
     {
+	    
       //note: we are dealing with big numbers, we are using 64 bit data types
 
 	//simulation variabes
@@ -92,7 +99,7 @@ namespace Backend
 	        immigrationRate = 39166;//amount of people immigrating and emmigrating summed
 	        baseImmigrationRate = 37500;
 
-	        baseFertility = 1.33;
+	        /*baseFertility = 1.33;
 	        baseMortality = 0.08;
 	        fertility = 1.33;
 	        mortality = 0.08;
@@ -141,7 +148,7 @@ namespace Backend
 				        economicState = 1;
 			        }
 		        }
-            
+            */
         }
         
     }
