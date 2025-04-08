@@ -1,0 +1,141 @@
+﻿@page "/"
+@using Backend
+@rendermode InteractiveServer
+
+<PageTitle>World</PageTitle>
+
+<p role="status">Current Month Count: @World.MonthCount</p>
+<p role="status"></p>
+<p role="status">Current Population: @World.country.cev.population</p>
+<p role="status">Current Gdb: @World.country.cev.gdp $</p>
+<p role="status">Current LivingCost: @World.country.cev.livingCost $/year</p>
+<p role="status">Current HealthCareEfficacy: @World.country.cev.healthcareEfficacy</p>
+<p role="status">Current Disease Severity: @World.country.cev.diseaseSeverity</p>
+<p role="status">Current Disease Amount: @World.country.cev.diseaseAmount</p>
+<p role="status">Current Immigration Rate: @World.country.immigrationRate</p>
+<p role="status">Current Fertility: @World.country.fertility</p>
+<p role="status">Current Mortality: @World.country.mortality</p>
+
+
+<button class="btn btn-primary" @onclick="IncrementCount">Update</button><br>
+<button class="btn btn-primary" @onclick="Preset1">Canada normal.</button><br>
+<button class="btn btn-primary" @onclick="Preset2">Canada with really bad pandemic.</button><br>
+<button class="btn btn-primary" @onclick="Preset3">Canada with high cost of living.</button><br>
+<button class="btn btn-primary" @onclick="Preset4">Canada with low fertility</button><br>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        World.country.Update(1f);
+        World.MonthCount++;
+    }
+
+    private void Preset1()
+    {
+        World.country.cev.population = 40000000;
+        World.country.oldPopulation = 40000000;
+
+        World.country.cev.gdp = 2100000000000;//dollar value
+        World.country.cev.livingCost = 48000;//cost of living, dollar value
+        World.country.inflation = 1.02;//increase in cost of living, something like 1.02
+        World.country.lgc = (double)World.country.cev.gdp / (double)World.country.cev.population / (double)World.country.cev.livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+        World.country.oldlgc = World.country.lgc;//store old values to allow calculation of perception of state of the economy
+        World.country.oldoldlgc = World.country.lgc;
+
+        World.country.deltaHealth = 1.1;//from 0-1, resiliance
+        World.country.cev.healthcareEfficacy = 0.95;//from 0-1 how many diseases result in death
+        World.country.cev.diseaseSeverity = 0.2;//affects health care efficacy
+        World.country.cev.diseaseAmount = 0.05;
+
+        World.country.immigrationRate = 39166;//amount of people immigrating and emmigrating summed
+        World.country.baseImmigrationRate = 37500;
+        World.country.cev.immigrationCoefficient = (double)World.country.baseImmigrationRate / (double)World.country.cev.population;
+
+        World.country.cev.baseFertility = 1.33;
+        World.country.cev.baseMortality = 0.001;
+        World.country.fertility = 1.33;
+        World.country.mortality = 0.001;
+    }
+    private void Preset2()
+    {
+        World.country.cev.population = 40000000;
+        World.country.oldPopulation = 40000000;
+
+        World.country.cev.gdp = 2100000000000;//dollar value
+        World.country.cev.livingCost = 48000;//cost of living, dollar value
+        World.country.inflation = 1.02;//increase in cost of living, something like 1.02
+        World.country.lgc = (double)World.country.cev.gdp / (double)World.country.cev.population / (double)World.country.cev.livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+        World.country.oldlgc = World.country.lgc;//store old values to allow calculation of perception of state of the economy
+        World.country.oldoldlgc = World.country.lgc;
+
+        World.country.deltaHealth = 1.1;//from 0-1, resiliance
+        World.country.cev.healthcareEfficacy = 0.65;//from 0-1 how many diseases result in death
+        World.country.cev.diseaseSeverity = 0.9;//affects health care efficacy
+        World.country.cev.diseaseAmount = 0.7;
+
+        World.country.immigrationRate = 39166;//amount of people immigrating and emmigrating summed
+        World.country.baseImmigrationRate = 37500;
+        World.country.cev.immigrationCoefficient = (double)World.country.baseImmigrationRate / (double)World.country.cev.population;
+
+        World.country.cev.baseFertility = 1.33;
+        World.country.cev.baseMortality = 0.001;
+        World.country.fertility = 1.33;
+        World.country.mortality = 0.001;
+    }
+    private void Preset3()
+    {
+        World.country.cev.population = 40000000;
+        World.country.oldPopulation = 40000000;
+
+        World.country.cev.gdp = 2100000000000;//dollar value
+        World.country.cev.livingCost = 60000;//cost of living, dollar value
+        World.country.inflation = 1.02;//increase in cost of living, something like 1.02
+        World.country.lgc = (double)World.country.cev.gdp / (double)World.country.cev.population / (double)World.country.cev.livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+        World.country.oldlgc = World.country.lgc;//store old values to allow calculation of perception of state of the economy
+        World.country.oldoldlgc = World.country.lgc;
+
+        World.country.deltaHealth = 1.1;//from 0-1, resiliance
+        World.country.cev.healthcareEfficacy = 0.95;//from 0-1 how many diseases result in death
+        World.country.cev.diseaseSeverity = 0.2;//affects health care efficacy
+        World.country.cev.diseaseAmount = 0.05;
+
+        World.country.immigrationRate = 39166;//amount of people immigrating and emmigrating summed
+        World.country.baseImmigrationRate = 37500;
+        World.country.cev.immigrationCoefficient = (double)World.country.baseImmigrationRate / (double)World.country.cev.population;
+
+        World.country.cev.baseFertility = 1.33;
+        World.country.cev.baseMortality = 0.001;
+        World.country.fertility = 1.33;
+        World.country.mortality = 0.001;
+    }
+    private void Preset4()
+    {
+        World.country.cev.population = 40000000;
+        World.country.oldPopulation = 40000000;
+
+        World.country.cev.gdp = 2100000000000;//dollar value
+        World.country.cev.livingCost = 48000;//cost of living, dollar value
+        World.country.inflation = 1.02;//increase in cost of living, something like 1.02
+        World.country.lgc = (double)World.country.cev.gdp / (double)World.country.cev.population / (double)World.country.cev.livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+        World.country.oldlgc = World.country.lgc;//store old values to allow calculation of perception of state of the economy
+        World.country.oldoldlgc = World.country.lgc;
+
+        World.country.deltaHealth = 1.1;//from 0-1, resiliance
+        World.country.cev.healthcareEfficacy = 0.95;//from 0-1 how many diseases result in death
+        World.country.cev.diseaseSeverity = 0.2;//affects health care efficacy
+        World.country.cev.diseaseAmount = 0.05;
+
+        World.country.immigrationRate = 39166;//amount of people immigrating and emmigrating summed
+        World.country.baseImmigrationRate = 37500;
+        World.country.cev.immigrationCoefficient = (double)World.country.baseImmigrationRate / (double)World.country.cev.population;
+
+        World.country.cev.baseFertility = 0.9;
+        World.country.cev.baseMortality = 0.001;
+        World.country.fertility = 0.9;
+        World.country.mortality = 0.001;
+    }
+    
+
+}

@@ -80,7 +80,7 @@ namespace Backend
 	        cev.baseFertility = 1.33;
 	        cev.baseMortality = 0.08;
 	        fertility = 1.33;
-	        mortality = 0.08;
+	        mortality = 0.001;
 
 	        storedTime = 0.0f;
         }
@@ -127,9 +127,9 @@ namespace Backend
 		        oldPopulation = cev.population;
 		        double baselgc = 1.2;
 		        int economicState = 0;
-		        inflation = 1.02; //determine inflation
-		        if (lgc < baselgc) inflation = 1.03; //cost of living up, inflation up
-		        if (lgc > baselgc) inflation = 1.01; //cost of living down, inflation down
+		        inflation = 1.002; //determine inflation
+		        if (lgc < baselgc) inflation = 1.003; //cost of living up, inflation up
+		        if (lgc > baselgc) inflation = 1.001; //cost of living down, inflation down
 		        //determine living cost
 		        cev.livingCost *= inflation;
 		        //determine lgc
@@ -179,17 +179,17 @@ namespace Backend
 			        immigrantEffect = 1.0 / (immigrationRate / (long)(cev.immigrationCoefficient * (double)cev.population));
 		        }
 
-		        cev.healthcareEfficacy = clamp(cev.healthcareEfficacy * immigrationRate * cev.deltaHealth * (((econOutlookEffect - 1.0) * 2.0) + 1.0),
+		        cev.healthcareEfficacy = clamp(cev.healthcareEfficacy * immigrationRate * deltaHealth * (((econOutlookEffect - 1.0) * 2.0) + 1.0),
 				        0.1, 0.95);
 		        cev.diseaseSeverity *= 1.0 - (0.1 * cev.healthcareEfficacy);
 		        cev.diseaseAmount *= 1.0 - (0.1 * cev.healthcareEfficacy);
-		        mortality = 0.08 + (cev.diseaseAmount * cev.diseaseSeverity * cev.healthcareEfficacy);
+		        mortality = 0.001 + (cev.diseaseAmount * cev.diseaseSeverity * cev.healthcareEfficacy);
 
 
 		        baseImmigrationRate = (long)(cev.immigrationCoefficient * (double)cev.population);
 		        immigrationRate = (long)((double)baseImmigrationRate * (((econOutlookEffect - 1.0) * 2.0) + 1.0));
 
-		        cev.baseFertility = 1.33;
+		        
 		        double lifeExpectancy = clamp(85 * cev.healthcareEfficacy, 40, 85); //life expectancy based on health care
 		        fertility = cev.baseFertility / (lifeExpectancy * 12.0); //set fertility to 
 		        cev.population = cev.population + (long)((immigrationRate) - (cev.population * mortality) + (cev.population * fertility));
