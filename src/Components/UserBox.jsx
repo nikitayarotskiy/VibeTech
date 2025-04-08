@@ -16,6 +16,33 @@ export default function UserBox() {
         isDeveloped: true
     });
 
+    const sendDataToAPI = async () => {
+        try {
+            const response = await fetch('http://localhost:4000/api/lifeleap/sendData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            console.log('Data successfully sent:', result);
+        } catch (error) {
+            console.error('Error sending data:', error);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(formData);
+        sendDataToAPI();
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -38,20 +65,16 @@ export default function UserBox() {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData);
-    };
 
     return (
-        <div className="w-full max-w-2xl bg-[#1a2e1a] p-8 rounded-2xl shadow-2xl border border-[#2d4a2d] font-sans">
-            <h2 className="text-3xl font-bold text-[#d1e7dd] mb-6">Population Dynamics Input</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-6">
+        <div className="w-full max-w-2xl bg-gradient-to-br from-[#1a2e1a] to-[#0f1a0f] p-8 rounded-3xl shadow-2xl border border-[#2d4a2d]/50 backdrop-blur-sm font-sans">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#d1e7dd] to-[#a8d5b9] bg-clip-text text-transparent mb-8">Population Dynamics Input</h2>
+            <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Economy Status */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">Economy Strength (0-100)</span>
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Economy Strength</span>
                         </label>
                         <Slider
                             value={formData.economy}
@@ -64,39 +87,43 @@ export default function UserBox() {
                                 color: '#4caf50',
                                 '& .MuiSlider-thumb': {
                                     backgroundColor: '#4caf50',
+                                    boxShadow: '0 0 0 4px rgba(76, 175, 80, 0.2)',
                                 },
                                 '& .MuiSlider-track': {
                                     backgroundColor: '#4caf50',
+                                },
+                                '& .MuiSlider-rail': {
+                                    backgroundColor: '#2d4a2d',
                                 },
                             }}
                         />
                     </div>
 
                     {/* Population Change */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">Population Change</span>
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Population Change</span>
                         </label>
                         <div className="flex space-x-4">
-                            <label className="flex items-center text-[#d1e7dd]">
+                            <label className="flex items-center text-[#d1e7dd] hover:text-[#4caf50] transition-colors">
                                 <input
                                     type="radio"
                                     name="populationChange"
                                     value="positive"
                                     checked={formData.populationChange === 'positive'}
                                     onChange={handleChange}
-                                    className="mr-2 accent-[#4caf50]"
+                                    className="mr-2 accent-[#4caf50] w-4 h-4"
                                 />
                                 Positive
                             </label>
-                            <label className="flex items-center text-[#d1e7dd]">
+                            <label className="flex items-center text-[#d1e7dd] hover:text-[#4caf50] transition-colors">
                                 <input
                                     type="radio"
                                     name="populationChange"
                                     value="negative"
                                     checked={formData.populationChange === 'negative'}
                                     onChange={handleChange}
-                                    className="mr-2 accent-[#4caf50]"
+                                    className="mr-2 accent-[#4caf50] w-4 h-4"
                                 />
                                 Negative
                             </label>
@@ -104,16 +131,16 @@ export default function UserBox() {
                     </div>
 
                     {/* GDP per Capita */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">GDP per Capita (USD)</span>
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">GDP per Capita</span>
                         </label>
                         <input
                             type="number"
                             name="gdpLiving"
                             value={formData.gdpLiving}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
+                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d]/30 bg-[#1a2e1a]/20 text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50]/50 focus:border-[#4caf50]/50 transition-all"
                             placeholder="Enter GDP"
                             min="0"
                             step="100"
@@ -121,9 +148,9 @@ export default function UserBox() {
                     </div>
 
                     {/* Poverty Rate */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">Poverty Rate (%)</span>
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Poverty Rate</span>
                         </label>
                         <Slider
                             value={formData.povertyRate}
@@ -136,50 +163,54 @@ export default function UserBox() {
                                 color: '#4caf50',
                                 '& .MuiSlider-thumb': {
                                     backgroundColor: '#4caf50',
+                                    boxShadow: '0 0 0 4px rgba(76, 175, 80, 0.2)',
                                 },
                                 '& .MuiSlider-track': {
                                     backgroundColor: '#4caf50',
+                                },
+                                '& .MuiSlider-rail': {
+                                    backgroundColor: '#2d4a2d',
                                 },
                             }}
                         />
                     </div>
 
                     {/* Healthcare Quality */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">Healthcare Quality</span>
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Healthcare Quality</span>
                         </label>
                         <div className="flex space-x-4">
-                            <label className="flex items-center text-[#d1e7dd]">
+                            <label className="flex items-center text-[#d1e7dd] hover:text-[#4caf50] transition-colors">
                                 <input
                                     type="radio"
                                     name="healthcareQuality"
                                     value="good"
                                     checked={formData.healthcareQuality === 'good'}
                                     onChange={handleChange}
-                                    className="mr-2 accent-[#4caf50]"
+                                    className="mr-2 accent-[#4caf50] w-4 h-4"
                                 />
                                 Good
                             </label>
-                            <label className="flex items-center text-[#d1e7dd]">
+                            <label className="flex items-center text-[#d1e7dd] hover:text-[#4caf50] transition-colors">
                                 <input
                                     type="radio"
                                     name="healthcareQuality"
                                     value="average"
                                     checked={formData.healthcareQuality === 'average'}
                                     onChange={handleChange}
-                                    className="mr-2 accent-[#4caf50]"
+                                    className="mr-2 accent-[#4caf50] w-4 h-4"
                                 />
                                 Average
                             </label>
-                            <label className="flex items-center text-[#d1e7dd]">
+                            <label className="flex items-center text-[#d1e7dd] hover:text-[#4caf50] transition-colors">
                                 <input
                                     type="radio"
                                     name="healthcareQuality"
                                     value="poor"
                                     checked={formData.healthcareQuality === 'poor'}
                                     onChange={handleChange}
-                                    className="mr-2 accent-[#4caf50]"
+                                    className="mr-2 accent-[#4caf50] w-4 h-4"
                                 />
                                 Poor
                             </label>
@@ -187,9 +218,9 @@ export default function UserBox() {
                     </div>
 
                     {/* Fertility Rate */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">Fertility Rate (children per woman)</span>
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Fertility Rate</span>
                         </label>
                         <Slider
                             value={formData.fertilityRate}
@@ -203,24 +234,29 @@ export default function UserBox() {
                                 color: '#4caf50',
                                 '& .MuiSlider-thumb': {
                                     backgroundColor: '#4caf50',
+                                    boxShadow: '0 0 0 4px rgba(76, 175, 80, 0.2)',
                                 },
                                 '& .MuiSlider-track': {
                                     backgroundColor: '#4caf50',
+                                },
+                                '& .MuiSlider-rail': {
+                                    backgroundColor: '#2d4a2d',
                                 },
                             }}
                         />
                     </div>
 
                     {/* Migration */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="text-[#d1e7dd] font-medium">Net Migration Rate (per 1000 people)</span>
+                    <div className="form-control bg-[#1a2e1a]/50 p-4 rounded-xl border border-[#2d4a2d]/30">
+                        <label className="label mb-3">
+                            <span className="text-[#d1e7dd] font-medium text-sm uppercase tracking-wider">Migration Rate</span>
                         </label>
                         <input
                             type="number"
                             name="migration"
                             value={formData.migration}
                             onChange={handleChange}
+                            className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d]/30 bg-[#1a2e1a]/20 text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50]/50 focus:border-[#4caf50]/50 transition-all"
                             className="w-full px-4 py-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] text-[#d1e7dd] focus:ring-2 focus:ring-[#4caf50] focus:border-[#4caf50] transition-all"
                             placeholder="Enter migration rate"
                             min="-100"
@@ -311,6 +347,10 @@ export default function UserBox() {
                     <button
                         type="submit"
                         className="w-full px-6 py-3 bg-[#4caf50] text-[#d1e7dd] font-semibold rounded-lg hover:bg-[#3d8b40] transition-all transform hover:scale-[1.02] active:scale-95"
+                        onClick={() => {
+                            console.log('Submit button clicked');
+                            handleSubmit();
+                        }}
                     >
                         Submit Data
                     </button>

@@ -1,22 +1,24 @@
 import { API_ENDPOINTS } from './apiConfig';
 
-export async function getCountryData(country) {
+export async function sendUserData(formData) {
     try {
-        const response = await fetch(API_ENDPOINTS.GET_DATA, {
+        const response = await fetch(API_ENDPOINTS.SEND_DATA, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ country: country })
+            body: JSON.stringify(formData)
         });
 
         if (response.ok) {
             const result = await response.json();
-            return result.response;
+            return result;
         } else {
-            console.error('Failed to fetch items');
+            console.error('Failed to send user data');
+            return null;
         }
     } catch (error) {
         console.error('Error:', error);
+        return null;
     }
 }

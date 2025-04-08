@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import StatisticsDisplay from '../Components/StatisticsDisplay';
-import PopulationGrid from '../Components/PopulationGrid';
 import { generateData, generateList } from '../logic';
-import Buttons from '../Components/Buttons';
 import UserBox from '../Components/UserBox';
 import OutputBox from '../Components/OutputBox';
 import VissualBox from '../Components/VissualBox';
+import Collapse from '../Components/Collapse';
 
 
 export default function Home() {
@@ -30,30 +28,25 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="flex w-full min-h-screen bg-neutral p-4">
-            {/* <div className="w-2/3 bg-white p-6 rounded shadow-md">
-                <div className="flex justify-between">
-                    <h2 className="text-black text-5xl ml-2">POPULATION</h2>
-                    <div className="tooltip top-0 right-2 mt-4 tooltip-left text-black " data-tip="Visual representation">
-                        <h2 className="material-symbols-outlined mt-3 ">info</h2>
-                    </div>
+        <div className="flex w-full min-h-screen bg-neutral">
+            {/* Left side - scrollable column */}
+            <div className="w-1/2 h-screen overflow-y-auto">
+                <div className="p-2">
+                    <UserBox />
                 </div>
-
-                <div className="w-full bg-black h-[5px] rounded mb-4"></div>
-                <PopulationGrid populationList={populationList} />
             </div>
-
-            <div className='w-1/3 h-full fixed top-4 right-0'>
-                <div className="pl-2 pr-2">
-                    <StatisticsDisplay statistics={statistics} />
-                    <Buttons statistics={statistics} setStatistics={setStatistics} populationList={populationList} setPopulationList={setPopulationList} />
+            
+            {/* Right side - scrollable column */}
+            <div className="w-1/2 h-screen overflow-y-auto">
+                <div className="space-y-2 p-2">
+                    <Collapse title="Visualizations">
+                        <VissualBox />
+                    </Collapse>
+                    <Collapse title="Analysis Output">
+                        <OutputBox />
+                    </Collapse>
                 </div>
-            </div> */}
-
-            <UserBox />
-            <OutputBox />
-            <VissualBox />
-
+            </div>
         </div>
     );
 }

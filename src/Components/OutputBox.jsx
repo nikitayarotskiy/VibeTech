@@ -3,7 +3,7 @@ import { LineChart, BarChart, PieChart } from '@mui/x-charts';
 
 export default function OutputBox() {
     return (
-        <div className="w-full max-w-4xl bg-[#1a2e1a] p-8 rounded-2xl shadow-2xl border border-[#2d4a2d] font-sans ml-2 mr-2">
+        <div className="w-full max-w-4xl bg-[#1a2e1a] p-8 rounded-2xl shadow-2xl border border-[#2d4a2d] font-sans">
             <h2 className="text-3xl font-bold text-[#d1e7dd] mb-6">Population Dynamics Analysis</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
