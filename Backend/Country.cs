@@ -11,9 +11,9 @@ namespace Backend
 		public double healthcareEfficacy {get; set;}//from 0-1 how many diseases result in death
 		public double diseaseSeverity {get; set;}//affects health care efficacy
 		public double diseaseAmount {get; set;}
-		public long immigrationCoefficient {get; set;}
-		public long baseFertility {get; set;}//births per woman
-		public long baseMortality {get; set;}//deaths of the population as scalar
+		public double immigrationCoefficient {get; set;}
+		public double baseFertility {get; set;}//births per woman
+		public double baseMortality {get; set;}//deaths of the population as scalar
 
 		public double deltaHealth { get; set; }//from 0-1, resiliance
 	}
@@ -34,14 +34,20 @@ namespace Backend
 		//internal variables for immigration/migration
 		public long immigrationRate {get; set;}//amount of people immigrating and emmigrating summed
 		
-		public long fertility {get; set;}//births per woman
-		public long mortality {get; set;}//deaths of the population as a scalar
+		public double fertility {get; set;}//births per woman
+		public double mortality {get; set;}//deaths of the population as a scalar
 		public long oldPopulation { get; set; }
 		public long baseImmigrationRate { get; set; }//base immigration and migration rates, try to return to these
 
 		public float storedTime { get; set; }//for timestep
 
 
+		public Country()
+		{
+			cev = new CEV();
+		}
+		
+		
 	//disaster types
 	
 	//determine new gdp
@@ -52,27 +58,27 @@ namespace Backend
 	        //disaster types
 
 	        //set default values for variables
-	        CEV.population = 40000000;
+	        cev.population = 40000000;
 	        oldPopulation = 40000000;
 
-	        CEV.gdp = 2100000000000;//dollar value
-	        CEV.livingCost = 48000;//cost of living, dollar value
+	        cev.gdp = 2100000000000;//dollar value
+	        cev.livingCost = 48000;//cost of living, dollar value
 	        inflation = 1.02;//increase in cost of living, something like 1.02
-	        lgc = (double)CEV.gdp / (double)CEV.population / (double)CEV.livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
+	        lgc = (double)cev.gdp / (double)cev.population / (double)cev.livingCost;//newGDP / population / livingCost, try to keep it around 1.2, dictates if the people are able to pay expenses
 	        oldlgc = lgc;//store old values to allow calculation of perception of state of the economy
 	        oldoldlgc = lgc;
 
 	        deltaHealth = 1.1;//from 0-1, resiliance
-	        CEV.healthcareEfficacy = 0.95;//from 0-1 how many diseases result in death
-	        CEV.diseaseSeverity = 0.2;//affects health care efficacy
-	        CEV.diseaseAmount = 0.05;
+	        cev.healthcareEfficacy = 0.95;//from 0-1 how many diseases result in death
+	        cev.diseaseSeverity = 0.2;//affects health care efficacy
+	        cev.diseaseAmount = 0.05;
 
 	        immigrationRate = 39166;//amount of people immigrating and emmigrating summed
 	        baseImmigrationRate = 37500;
-	        CEV.immigrationCoefficient = (double)CEV.population / (double)baseImmigrationRate;
+	        cev.immigrationCoefficient = (double)cev.population / (double)baseImmigrationRate;
 
-	        CEV.baseFertility = 1.33;
-	        CEV.baseMortality = 0.08;
+	        cev.baseFertility = 1.33;
+	        cev.baseMortality = 0.08;
 	        fertility = 1.33;
 	        mortality = 0.08;
 
@@ -118,22 +124,22 @@ namespace Backend
 	        if (storedTime > 2.0f)
 	        {
 		        storedTime = 0.0f;
-		        oldPopulation = CEV.population;
+		        oldPopulation = cev.population;
 		        double baselgc = 1.2;
 		        int economicState = 0;
 		        inflation = 1.02; //determine inflation
 		        if (lgc < baselgc) inflation = 1.03; //cost of living up, inflation up
 		        if (lgc > baselgc) inflation = 1.01; //cost of living down, inflation down
 		        //determine living cost
-		        CEV.livingCost *= inflation;
+		        cev.livingCost *= inflation;
 		        //determine lgc
 		        oldoldlgc = oldlgc;
 		        oldlgc = lgc;
-		        lgc = (double)CEV.gdp / (double)CEV.population / (double)CEV.livingCost / 1.2;
+		        lgc = (double)cev.gdp / (double)cev.population / (double)cev.livingCost / 1.2;
 		        //determine the economic state
 		        double deltaLGC = lgc - oldlgc;
 		        double oldDeltaLGC = oldlgc - oldoldlgc;
-		        if (deltaLGC * oldDeltaLGC <= 0.0 && abs(deltaLGC + oldDeltaLGC) < 0.01) //if economy is stable
+		        if (deltaLGC * oldDeltaLGC <= 0.0 && Math.Abs(deltaLGC + oldDeltaLGC) < 0.01) //if economy is stable
 		        {
 			        economicState = 3; //stable economy
 		        }
@@ -162,31 +168,31 @@ namespace Backend
 
 		        //determine new gdp
 		        double econOutlookEffect = ((3.0 - economicState) / 32.0) + 1.0;
-		        double gdpIncreasePopulation = ((double)CEV.population / (double)oldPopulation);
-		        CEV.gdp = (long)((double)CEV.gdp * (inflation) * (gdpIncreasePopulation) * (econOutlookEffect));
+		        double gdpIncreasePopulation = ((double)cev.population / (double)oldPopulation);
+		        cev.gdp = (long)((double)cev.gdp * (inflation) * (gdpIncreasePopulation) * (econOutlookEffect));
 
 		        //healthcare
 		        double immigrantEffect = 1.0f;
-		        if (immigrationRate > (long)(CEV.immigrationCoefficient * (double)CEV.population))
+		        if (immigrationRate > (long)(cev.immigrationCoefficient * (double)cev.population))
 		        {
 			        //we only accept 0.012 of the population of immigrant
-			        immigrantEffect = 1.0 / (immigrationRate / (long)(CEV.immigrationCoefficient * (double)CEV.population));
+			        immigrantEffect = 1.0 / (immigrationRate / (long)(cev.immigrationCoefficient * (double)cev.population));
 		        }
 
-		        CEV.healthcareEfficacy = clamp(CEV.healthcareEfficacy * immigrationRate * CEV.deltaHealth * (((econOutlookEffect - 1.0) * 2.0) + 1.0),
+		        cev.healthcareEfficacy = clamp(cev.healthcareEfficacy * immigrationRate * cev.deltaHealth * (((econOutlookEffect - 1.0) * 2.0) + 1.0),
 				        0.1, 0.95);
-		        CEV.diseaseSeverity *= 1.0 - (0.1 * CEV.healthcareEfficacy);
-		        CEV.diseaseAmount *= 1.0 - (0.1 * CEV.healthcareEfficacy);
-		        mortality = 0.08 + (CEV.diseaseAmount * CEV.diseaseSeverity * CEV.healthcareEfficacy);
+		        cev.diseaseSeverity *= 1.0 - (0.1 * cev.healthcareEfficacy);
+		        cev.diseaseAmount *= 1.0 - (0.1 * cev.healthcareEfficacy);
+		        mortality = 0.08 + (cev.diseaseAmount * cev.diseaseSeverity * cev.healthcareEfficacy);
 
 
-		        baseImmigrationRate = (long)(CEV.immigrationCoefficient * (double)CEV.population);
-		        immigrationRate = baseImmigrationRate * (((econOutlookEffect - 1.0) * 2.0) + 1.0);
+		        baseImmigrationRate = (long)(cev.immigrationCoefficient * (double)cev.population);
+		        immigrationRate = (long)((double)baseImmigrationRate * (((econOutlookEffect - 1.0) * 2.0) + 1.0));
 
-		        CEV.baseFertility = 1.33;
-		        double lifeExpectancy = clamp(85 * CEV.healthcareEfficacy, 40, 85); //life expectancy based on health care
-		        fertility = CEV.baseFertility / (lifeExpectancy * 12.0); //set fertility to 
-		        CEV.population = CEV.population + (immigrationRate) + (CEV.population * mortality) + (CEV.population * fertility);
+		        cev.baseFertility = 1.33;
+		        double lifeExpectancy = clamp(85 * cev.healthcareEfficacy, 40, 85); //life expectancy based on health care
+		        fertility = cev.baseFertility / (lifeExpectancy * 12.0); //set fertility to 
+		        cev.population = cev.population + (long)((immigrationRate) + (cev.population * mortality) + (cev.population * fertility));
 	        }
 	        
         }

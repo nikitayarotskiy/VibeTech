@@ -13,9 +13,9 @@ namespace Backend
         public static void Init()
         {
             listener = new HttpListener();
-            listener.Prefixes.Add("http://10.182.160.243:4000/api/lifeleap/getCountryData/");
-            listener.Prefixes.Add("http://10.182.160.243:4000/api/lifeleap/setCountryData/");
-            listener.Prefixes.Add("http://10.182.160.243:4000/api/lifeleap/updateCountryData/");
+            listener.Prefixes.Add("http://localhost:4000/api/lifeleap/getCountryData/");
+            listener.Prefixes.Add("http://localhost:4000/api/lifeleap/setCountryData/");
+            listener.Prefixes.Add("http://localhost:4000/api/lifeleap/updateCountryData/");
             try
             {
                 listener.Start();
