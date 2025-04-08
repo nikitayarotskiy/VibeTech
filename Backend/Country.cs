@@ -14,6 +14,8 @@ namespace Backend
 		public long baseImmigrationRate {get; set;}//base immigration and migration rates, try to return to these
 		public long baseFertility {get; set;}//births per woman
 		public long baseMortality {get; set;}//deaths of the population as scalar
+
+		public double deltaHealth { get; set; }//from 0-1, resiliance
 	}
 	
     public class Country
@@ -34,6 +36,8 @@ namespace Backend
 		
 		public long fertility {get; set;}//births per woman
 		public long mortality {get; set;}//deaths of the population as a scalar
+		public long oldPopulation { get; set; }
+		public long baseImmigrationRate { get; set; }//base immigration and migration rates, try to return to these
 
 
 	//disaster types
