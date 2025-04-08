@@ -3,7 +3,7 @@ using System.Text.Json;
 namespace Backend
 {
 
-	public struct CountryEnviormentVariables
+	public struct CEV
 	{
 		
 	}
