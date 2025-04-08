@@ -23,7 +23,13 @@ namespace Backend
         public double gdp { get; set; }//gdp of the country, dollar value, no limit on number
         public double inflation { get; set; }//inflation as a scalar 1.0f gives no inflation, 1.02f gives 2 percent, etc
         public double livingCostPerGdpPerCapita { get; set; }//gives a ratio of individual living cost and ratio per household, if it is 1 then you have an equal amount of income and expenses, over 1 and you have a ratio under one you are going in debt, more expenses and less income, if you have over 1 you have more income than expenses
+        public double disasterChance { get; set; }//timer from zero to one for a disaster, it can be increased or decreased by factors in the country, if it hits one we have a disaster
+        //posible disasters: rapid inflation(economic crash), mass disease, mass immigration/migration, cost of living increase, political disaster, etc
 
+        //main variables that we will expose to the user to edit
+        //population
+        //economy goodness(affects all economic variables?)
+        //country health(affectsfertility/birth rate and healthcare and disease and etc)
         
         public void Init()
         {
